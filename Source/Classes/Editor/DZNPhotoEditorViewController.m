@@ -92,6 +92,7 @@ typedef NS_ENUM(NSInteger, DZNPhotoAspect) {
 {
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor blackColor];
+    self.maximumZoomScale = 2.0;
     
     if (DZN_IS_IPAD) {
         self.title = NSLocalizedString(@"Edit Photo", nil);
@@ -189,7 +190,7 @@ typedef NS_ENUM(NSInteger, DZNPhotoAspect) {
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         _scrollView.backgroundColor = [UIColor clearColor];
         _scrollView.minimumZoomScale = 1.0;
-        _scrollView.maximumZoomScale = 2.0;
+        _scrollView.maximumZoomScale = self.maximumZoomScale;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.delegate = self;
@@ -655,6 +656,15 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
     }
     
     _cropSize = size;
+}
+
+- (void)setMaximumZoomScale:(CGFloat)maximumZoomScale
+{
+    _maximumZoomScale = maximumZoomScale;
+    
+    if (_scrollView != nil) {
+        _scrollView.maximumZoomScale = _maximumZoomScale;
+    }
 }
 
 
