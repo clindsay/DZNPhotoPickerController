@@ -709,10 +709,9 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
         dispatch_queue_t queue = dispatch_get_main_queue();
         dispatch_async(queue, ^{
             
-            if (self.acceptBlock) {
-                
+            if (self.acceptBlock) {                
                 NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                                 [NSValue valueWithCGRect:self.guideRect], UIImagePickerControllerCropRect,
+                                                 [NSValue valueWithCGRect:[self cropRectInOriginalImage]], UIImagePickerControllerCropRect,
                                                  @"public.image", UIImagePickerControllerMediaType,
                                                  @(self.cropMode), DZNPhotoPickerControllerCropMode,
                                                  @(self.scrollView.zoomScale), DZNPhotoPickerControllerCropZoomScale,
@@ -727,6 +726,38 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
             }
         });
     });
+}
+
+- (CGRect) cropRectInOriginalImage
+{
+    CGSize imageViewSize = self.imageView.frame.size;
+    CGSize scaledImageSize = CGSizeAspectFit(self.imageView.image.size, self.imageView.frame.size);
+    CGFloat distanceFromTopOfScrollViewToGuideRect = (_scrollView.bounds.size.height - self.guideRect.size.height) / 2.0;
+    CGFloat distanceFromTopOfImageViewToImage = ( imageViewSize.height - scaledImageSize.height ) / 2.0;
+    CGFloat distanceFromLeftOfScrollViewToGuideRect = (_scrollView.bounds.size.width - self.guideRect.size.width) / 2.0;
+    CGFloat distanceFromLeftOfImageViewToImage = ( imageViewSize.width - scaledImageSize.width ) / 2.0;
+    
+    CGFloat guideRectYInImageView = _scrollView.contentOffset.y + distanceFromTopOfScrollViewToGuideRect;
+    CGFloat guideRectYInScaledImage = guideRectYInImageView - distanceFromTopOfImageViewToImage;
+    CGFloat guideRectNormalizedYInImage = guideRectYInScaledImage / scaledImageSize.height;
+    CGFloat guideRectYInOriginalImage = guideRectNormalizedYInImage * self.imageView.image.size.height;
+    
+    CGFloat guideRectHeightInScaledImage = self.guideRect.size.height;
+    CGFloat guideRectNormalizedHeightInImage = guideRectHeightInScaledImage / scaledImageSize.height;
+    CGFloat guideRectHeightInOriginalImage = guideRectNormalizedHeightInImage * self.imageView.image.size.height;
+    
+    CGFloat guideRectXInImageView = _scrollView.contentOffset.x + distanceFromLeftOfScrollViewToGuideRect;
+    CGFloat guideRectXInScaledImage = guideRectXInImageView - distanceFromLeftOfImageViewToImage;
+    CGFloat guideRectNormalizedXInImage = guideRectXInScaledImage / scaledImageSize.width;
+    CGFloat guideRectXInOriginalImage = guideRectNormalizedXInImage * self.imageView.image.size.width;
+    
+    CGFloat guideRectWidthInScaledImage = self.guideRect.size.width;
+    CGFloat guideRectNormalizedWidthInImage = guideRectWidthInScaledImage / scaledImageSize.width;
+    CGFloat guideRectWidthInOriginalImage = guideRectNormalizedWidthInImage * self.imageView.image.size.width;
+    
+    CGRect guideRectInOriginalImage = CGRectMake(guideRectXInOriginalImage, guideRectYInOriginalImage, guideRectWidthInOriginalImage, guideRectHeightInOriginalImage);
+
+    return guideRectInOriginalImage;
 }
 
 - (void)cancelEdition:(id)sender
