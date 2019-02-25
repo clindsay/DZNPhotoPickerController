@@ -12,6 +12,7 @@
 
 NSString *const DZNPhotoPickerControllerCropMode =              @"com.dzn.photoPicker.cropMode";
 NSString *const DZNPhotoPickerControllerCropZoomScale =         @"com.dzn.photoPicker.cropZoomScale";
+NSString *const DZNPhotoPickerControllerScrollViewOffset =      @"com.dzn.photoPicker.scrollViewOffset";
 NSString *const DZNPhotoPickerControllerPhotoMetadata =         @"com.dzn.photoPicker.photoMetadata";
 
 NSString *const DZNPhotoPickerDidFinishPickingNotification =    @"com.dzn.photoPicker.didFinishPickingNotification";

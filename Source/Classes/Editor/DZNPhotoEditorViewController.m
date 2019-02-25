@@ -715,6 +715,7 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
                                                  @"public.image", UIImagePickerControllerMediaType,
                                                  @(self.cropMode), DZNPhotoPickerControllerCropMode,
                                                  @(self.scrollView.zoomScale), DZNPhotoPickerControllerCropZoomScale,
+                                                 @(self.scrollView.contentOffset), DZNPhotoPickerControllerScrollViewOffset,
                                                  nil];
                 
                 if (self.editingImage) [userInfo setObject:self.editingImage forKey:UIImagePickerControllerOriginalImage];
