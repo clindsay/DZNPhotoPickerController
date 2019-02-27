@@ -667,6 +667,26 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
     }
 }
 
+- (void) setZoomScale:(CGFloat)zoomScale
+{
+    self.scrollView.zoomScale = zoomScale;
+}
+
+- (CGFloat) zoomScale
+{
+    return self.scrollView.zoomScale;
+}
+
+- (void) setScrollViewOffset:(CGPoint)scrollViewOffset
+{
+    self.scrollView.contentOffset = scrollViewOffset;
+}
+
+- (CGPoint) scrollViewOffset
+{
+    return self.scrollView.contentOffset;
+}
+
 
 #pragma mark - DZNPhotoEditorViewController methods
 
@@ -764,7 +784,12 @@ DZNPhotoAspect photoAspectFromSize(CGSize aspectRatio)
 - (void)cancelEdition:(id)sender
 {
     if (self.cancelBlock) {
-        self.cancelBlock(self);
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                         @(self.scrollView.zoomScale), DZNPhotoPickerControllerCropZoomScale,
+                                         @(self.scrollView.contentOffset), DZNPhotoPickerControllerScrollViewOffset,
+                                         nil];
+
+        self.cancelBlock(self, userInfo);
     }
 }
 

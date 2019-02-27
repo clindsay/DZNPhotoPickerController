@@ -149,7 +149,7 @@ static char cancelationBlockKey;
             [self handleCompletion:userInfo];
         }];
         
-        [controller setCancelBlock:^(DZNPhotoEditorViewController *editor){
+        [controller setCancelBlock:^(DZNPhotoEditorViewController *editor, NSDictionary* userInfo){
             [self handleCancellation:self.delegate];
         }];
     }

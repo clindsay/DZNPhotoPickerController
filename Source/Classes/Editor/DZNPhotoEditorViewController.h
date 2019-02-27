@@ -14,7 +14,7 @@
 @class DZNPhotoEditorViewController;
 
 typedef void (^DZNPhotoEditorAcceptBlock)(DZNPhotoEditorViewController *editor, NSDictionary *userInfo);
-typedef void (^DZNPhotoEditorCancelBlock)(DZNPhotoEditorViewController *editor);
+typedef void (^DZNPhotoEditorCancelBlock)(DZNPhotoEditorViewController *editor, NSDictionary *userInfo);
 
 /**
  The controller in charge of displaying the big resolution image with the different cropping modes.
@@ -41,6 +41,9 @@ typedef void (^DZNPhotoEditorCancelBlock)(DZNPhotoEditorViewController *editor);
 @property (nonatomic, strong) DZNPhotoEditorAcceptBlock acceptBlock;
 /** A block to be executed whenever the user cancels the edition. */
 @property (nonatomic, strong) DZNPhotoEditorCancelBlock cancelBlock;
+
+@property (nonatomic, assign) CGFloat zoomScale;
+@property (nonatomic, assign) CGPoint scrollViewOffset;
 
 /**
  Initializes a photo editor with the specified image, and default cropping mode (Square).
